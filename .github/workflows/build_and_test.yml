@@ -46,20 +46,20 @@ jobs:
         mv $HOME/.local/bin/llvm-mingw-20240619-ucrt-ubuntu-20.04-x86_64 $HOME/.local/bin/llvm-mingw
         chmod -R +x $HOME/.local/bin/llvm-mingw/bin
         echo "$HOME/.local/bin/llvm-mingw/bin" >> $GITHUB_PATH
-        echo "CC=aarch64-w64-mingw32-gcc" >> $GITHUB_ENV
 
-    - name: Check CC
-      if: always()
+    - name: Set arm64 cross compiler
       shell: bash
-      run: |
-        echo $CC
-        ls -a $HOME/.local/bin/llvm-mingw/
-    
-    # - name: Build shared lib amd64
-    #   run: build/build-cshared-windows.ps1 -RebuildAll $true -IsArm $false
+      run: echo "CC=aarch64-w64-mingw32-gcc" >> $GITHUB_ENV
 
     - name: Build shared lib arm64
       run: build/build-cshared-windows.ps1 -RebuildAll $true -IsArm $true
+
+    - name: Set amd64 cross compiler
+      shell: bash
+      run: echo "CC=x86_64-w64-mingw32-gcc" >> $GITHUB_ENV
+
+    - name: Build shared lib amd64
+      run: build/build-cshared-windows.ps1 -RebuildAll $true -IsArm $false
 
     - name: Restore dependencies
       run: dotnet restore src/dotnet/Proton.Security.csproj

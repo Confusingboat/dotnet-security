@@ -42,8 +42,8 @@ jobs:
           src/dotnet/Proton.Security.csproj `
           -c Release `
           -o ${{ env.ArtifactDirectory }} `
-          /p:Version=${{ inputs.version }}
-          /p:PackageVersion=${{ inputs.version }}
+          /p:Version=${{ inputs.version }} `
+          /p:PackageVersion=${{ inputs.version }} `
           /p:RepositoryUrl="${{ github.server_url }}/${{ github.repository }}" `
           /p:Authors=${{ github.repository_owner }}
 
