@@ -9,6 +9,7 @@ $lib_name = "ProtonSecurity"
 $env:GOFLAGS = "-trimpath"
 $env:CGO_ENABLED = "1"
 $env:CGO_LDFLAGS = "-s -w"
+$env:GOOS = "windows"
 
 $env:GOARCH = If($IsArm) { "arm64" } Else { "amd64" }
 $pathArch = If($IsArm) { "win-arm64" } Else { "win-x64" }

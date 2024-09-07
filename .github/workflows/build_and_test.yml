@@ -37,8 +37,29 @@ jobs:
         dotnet-version: 8
         dotnet-quality: ga
 
-    - name: Build shared lib
-      run: build/build-cshared-windows.ps1
+    - name: Install cross compiler
+      shell: bash
+      run: |
+        mkdir -p $HOME/.local/bin
+        wget https://github.com/mstorsjo/llvm-mingw/releases/download/20240619/llvm-mingw-20240619-ucrt-ubuntu-20.04-x86_64.tar.xz
+        tar -xvf llvm-mingw-20240619-ucrt-ubuntu-20.04-x86_64.tar.xz -C $HOME/.local/bin
+        mv $HOME/.local/bin/llvm-mingw-20240619-ucrt-ubuntu-20.04-x86_64 $HOME/.local/bin/llvm-mingw
+        chmod -R +x $HOME/.local/bin/llvm-mingw/bin
+        echo "$HOME/.local/bin/llvm-mingw/bin" >> $GITHUB_PATH
+        echo "CC=aarch64-w64-mingw32-gcc" >> $GITHUB_ENV
+
+    - name: Check CC
+      if: always()
+      shell: bash
+      run: |
+        echo $CC
+        ls -a $HOME/.local/bin/llvm-mingw/
+    
+    # - name: Build shared lib amd64
+    #   run: build/build-cshared-windows.ps1 -RebuildAll $true -IsArm $false
+
+    - name: Build shared lib arm64
+      run: build/build-cshared-windows.ps1 -RebuildAll $true -IsArm $true
 
     - name: Restore dependencies
       run: dotnet restore src/dotnet/Proton.Security.csproj
