@@ -39,6 +39,7 @@ jobs:
 
       - run: |
           dotnet pack `
+          src/dotnet/Proton.Security.csproj `
           -c Release `
           -o ${{ env.ArtifactDirectory }} `
           /p:RepositoryUrl="${{ github.server_url }}/${{ github.repository }}" `
