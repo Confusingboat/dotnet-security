@@ -37,6 +37,17 @@ jobs:
           --store-password-in-clear-text `
           --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
+      - name: Download shared lib
+        uses: actions/download-artifact@v4
+        with:
+          path: tmp
+
+      - name: Prepare for pack
+        shell: bash
+        run: |
+          mkdir -p src/go/bin
+          mv tmp/shared-lib/runtimes src/go/bin
+
       - run: |
           dotnet pack `
           src/dotnet/Proton.Security.csproj `
@@ -46,6 +57,12 @@ jobs:
           /p:PackageVersion=${{ inputs.version }} `
           /p:RepositoryUrl="${{ github.server_url }}/${{ github.repository }}" `
           /p:Authors=${{ github.repository_owner }}
+
+      - name: Enumerate files
+        shell: bash
+        run: |
+          find src/go
+          find src/dotnet/bin
 
       - name: Echo artifact directory
         run: |
