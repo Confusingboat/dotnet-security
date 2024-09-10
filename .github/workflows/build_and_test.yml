@@ -46,13 +46,6 @@ jobs:
         mv $HOME/.local/bin/llvm-mingw-20240619-ucrt-ubuntu-20.04-x86_64 $HOME/.local/bin/llvm-mingw
         chmod -R +x $HOME/.local/bin/llvm-mingw/bin
         echo "$HOME/.local/bin/llvm-mingw/bin" >> $GITHUB_PATH
-    
-    - name: Setup dirs
-      shell: bash
-      run: |
-        chown $(whoami) -R .
-        sudo mkdir /bin/runtimes
-        sudo chmod 777 /bin/runtimes
 
     - name: Set arm64 cross compiler
       shell: bash
@@ -75,13 +68,6 @@ jobs:
         -RebuildAll $true `
         -IsArm $false `
         -CleanBeforeBuild $false
-
-    - name: Enumerate files
-      shell: bash
-      run: |
-        mkdir -p src/go/bin/runtimes
-        sudo mv /bin/runtimes src/go/bin/runtimes
-        find src
 
     - name: Upload shared lib
       uses: actions/upload-artifact@v4

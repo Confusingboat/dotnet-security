@@ -17,8 +17,8 @@ $env:GOOS = "windows"
 $env:GOARCH = if($IsArm) { "arm64" } else { "amd64" }
 $pathArch = if($IsArm) { "win-arm64" } else { "win-x64" }
 
-$outputPath = "/bin/runtimes/$pathArch/native/$lib_name.dll"
-write-host "Building to `"$(get-location)$outputPath`""
+$outputPath = "bin/runtimes/$pathArch/native/$lib_name.dll"
+write-host "Building to `"$(get-location)/$outputPath`""
 $buildCommand = "go build -buildmode=c-shared -v -o `"$outputPath`""
 if ($RebuildAll) {
 	$buildCommand += " -a"
